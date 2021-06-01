@@ -26,7 +26,7 @@ class Scraper:
         self.process = CrawlerProcess(self.settings)
         self.spider = ExtractSpider # The spider you want to crawl
 
-    def crawl(self, url_list, extensions=[".pdf"], output_dir=None):
-        self.process.crawl(self.spider, urls=url_list, ext=extensions, 
+    def crawl(self, url_list, extensions=[".pdf"], save=False, output_dir=None):
+        self.process.crawl(self.spider, urls=url_list, ext=extensions, save=save,
         	output=output_dir)
         self.process.start()  # the script will block here until the crawling is finished

@@ -22,6 +22,7 @@ if __name__ == "__main__":
 	scraper.crawl(	
 		url_list=args.urls, 
 		extensions=args.ext,								# Text file extensions (.pdf, .docx, ...)
+		save=args.save,
 		output_dir=args.output								# Output directory
 	)
 

@@ -54,6 +54,7 @@ class ExtractSpider(scrapy.Spider):
         super(ExtractSpider, self).__init__(*args, **kwargs)
         self.start_urls = extract_list(kwargs.get("urls", []))
         self.extensions = extract_list(kwargs.get("ext", [".pdf"]))
+        self.save_enable = kwargs.get("save", False)
 
         self.output_dir = kwargs.get("output", BASE_DIR)
         # print(kwargs)
@@ -74,7 +75,7 @@ class ExtractSpider(scrapy.Spider):
         check_ext = ext in self.extensions
         prev_url = kwargs.get("prev_url", None)
 
-        if check_ext:
+        if check_ext and self.save_enable:
             self.save_item(name, response, prev_url)
         
         loader = ItemLoader(item=CrawlItem())
