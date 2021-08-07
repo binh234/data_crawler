@@ -24,6 +24,7 @@ def main():
     ZingCrawler(
         url=args.url,
         output_path=args.output_path,
+        save_media=args.save_media,
         save_info=args.save_info,
         down_lyric=args.down_lyric,
         log_path=args.log_path,

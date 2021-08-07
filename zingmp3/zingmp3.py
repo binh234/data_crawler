@@ -108,7 +108,7 @@ https://zingmp3.vn/embed/song/ZWBW6WE8?start=false
             item_dict = self.extract_item_dict(data, _type)
             
             title = data.get('title')
-            streaming = self.get_streaming(_id=video_id, _type=_type) or self.get_source(_url=url, _type=_type)
+            streaming = self.get_source(_id=video_id, _type=_type) or self.get_streaming(_id=video_id, _type=_type)
             lyric = ""
             if self._down_lyric:
                 lyric = data.get('lyric') or try_get(data, lambda x: x['lyrics'][0]['content'],
@@ -208,7 +208,7 @@ https://zingmp3.vn/embed/song/ZWBW6WE8?start=false
             ))
         else:
             for quality, url in streaming.items():
-                if url:
+                if url != "" and url != "VIP":
                     if quality == 'lossless':
                         formats.append({
                             'url': add_protocol(url),
@@ -227,7 +227,6 @@ https://zingmp3.vn/embed/song/ZWBW6WE8?start=false
         _ext = will_down.get("ext")
         item_dict['download_link'] = _url
         self.log_item(item_dict)
-        
         if not self._save_media:
             return
 
@@ -262,21 +261,16 @@ https://zingmp3.vn/embed/song/ZWBW6WE8?start=false
         res = self.fr(api=api)
         return try_get(res, lambda x: x["data"]["file"])
 
-    def get_source(self, _url, _type):
-        api = "https://zing-mp3.glitch.me/?url={}".format(_url)
-        res = self.fr(api=api)
-        if res is None:
-            return None
-        source = {}
+    def get_source(self, _id, _type):
         if _type == "video-clip":
-            data = res.get("source").get("video")
-        else:
-            data = res.get("source").get("audio")
-        
-        for quality, sources in data.items():
-            source[quality] = sources['view']
-        
-        return source
+            _api_video = """http://api.mp3.zing.vn/api/mobile/video/getvideoinfo?requestdata={"id":"%s"}"""
+            _json_video = self.fr(api=_api_video % _id)
+            time.sleep(2)
+            return _json_video.get("source")
+        return {
+            "128": "https://api.mp3.zing.vn/api/streaming/song/{}/128".format(_id),
+            "320": "https://api.mp3.zing.vn/api/streaming/song/{}/320".format(_id)
+        }
     
     def get_streaming(self, _id, _type):
         if _type == "video-clip":
