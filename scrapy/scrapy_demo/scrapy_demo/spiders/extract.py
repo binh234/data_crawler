@@ -104,6 +104,19 @@ class ExtractSpider(scrapy.Spider):
                     callback=self.parse,
                     cb_kwargs=dict(prev_url=response.url)
                 )
+        
+
+        # bypass https://chiasenhac.vn/
+        if '/128/' in url:
+            yield Request(
+                url = url.replace('/128/','/320/'),
+                callback=self.parse,
+            )
+            yield Request(
+                url = url.replace('/128/','/500/'),
+                callback=self.parse,
+            )
+        ################################
 
     def save_item(self, name, response, prev_url):
         if prev_url:

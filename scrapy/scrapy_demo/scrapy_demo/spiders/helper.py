@@ -83,6 +83,8 @@ MIME_TYPES = {
     'application/zip': '.zip',
     'audio/mpeg': '.mp3',
     'audio/mp3': '.mp3',
+    'applicaton/octet-stream': '.mp3',
+    'audio/mp4': '.mp4',
     'audio/x-m4a': '.m4a',
     'binary/octet-stream': '.exe',  # Should be application/octet-stream
     'font/woff': '.woff', 'font/woff2': '.woff2',
